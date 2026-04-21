@@ -68,7 +68,30 @@ namespace MonsterModifiers
             ModifierAssetUtils.LoadAllIcons();
             
             Configurations_MaxModifiers = ConfigFileExtensions.BindConfig(Config, "Balance", "Max Modifiers",5,"The maximum amount of modifiers a creature can have.", true);
-            
+
+            Configurations_Boss_Modifiers = ConfigFileExtensions.BindConfig(Config, "Boss Modifiers", "boss_Modifiers", Toggle.On, "Enable or disable modifier assignment for boss monsters.", true);
+            int bossMaxAvail = Enum.GetValues(typeof(MonsterModifierTypes)).Length;
+            Configurations_Boss_Min_Modifiers = Config.Bind("Boss Modifiers", "boss_Min_Modifiers", 5,
+                new BepInEx.Configuration.ConfigDescription(
+                    "Minimum modifiers for bosses regardless of star count. 0 = star-count only (no stars = no modifiers). N = always assign N + star-count modifiers.",
+                    new BepInEx.Configuration.AcceptableValueRange<int>(0, bossMaxAvail)));
+
+            Cfg_PierceImmunity_DamageReduction = Config.Bind("Modifier_Defense", "PierceImmunity Damage Reduction %", 70,
+                new BepInEx.Configuration.ConfigDescription("Percentage of pierce damage reduced when PierceImmunity modifier is active. 100 = full immunity.", new BepInEx.Configuration.AcceptableValueRange<int>(0, 100)));
+            Cfg_SlashImmunity_DamageReduction = Config.Bind("Modifier_Defense", "SlashImmunity Damage Reduction %", 70,
+                new BepInEx.Configuration.ConfigDescription("Percentage of slash damage reduced when SlashImmunity modifier is active. 100 = full immunity.", new BepInEx.Configuration.AcceptableValueRange<int>(0, 100)));
+            Cfg_BluntImmunity_DamageReduction = Config.Bind("Modifier_Defense", "BluntImmunity Damage Reduction %", 70,
+                new BepInEx.Configuration.ConfigDescription("Percentage of blunt damage reduced when BluntImmunity modifier is active. 100 = full immunity.", new BepInEx.Configuration.AcceptableValueRange<int>(0, 100)));
+            Cfg_ElementalImmunity_DamageReduction = Config.Bind("Modifier_Defense", "ElementalImmunity Damage Reduction %", 70,
+                new BepInEx.Configuration.ConfigDescription("Percentage of elemental damage (fire/frost/lightning/poison/spirit) reduced when ElementalImmunity modifier is active. 100 = full immunity.", new BepInEx.Configuration.AcceptableValueRange<int>(0, 100)));
+
+            Cfg_Knockback_StaggerForce = Config.Bind("Modifier_Offense", "Knockback Stagger Force", 500,
+                new BepInEx.Configuration.ConfigDescription("Stagger force applied by the Knockback modifier.", new BepInEx.Configuration.AcceptableValueRange<int>(0, 2000)));
+            Cfg_Knockback_PushForce = Config.Bind("Modifier_Offense", "Knockback Push Force", 45,
+                new BepInEx.Configuration.ConfigDescription("Push force applied by the Knockback modifier.", new BepInEx.Configuration.AcceptableValueRange<int>(0, 200)));
+
+            ShaderLogFilter.Install();
+
             // ShieldDome.LoadShieldDome();
             
             CompatibilityUtils.RunCompatibiltyChecks();
@@ -79,7 +102,15 @@ namespace MonsterModifiers
         }
         
         public static ConfigEntry<int> Configurations_MaxModifiers;
-        
+        public static ConfigEntry<Toggle> Configurations_Boss_Modifiers;
+        public static ConfigEntry<int> Configurations_Boss_Min_Modifiers;
+        public static ConfigEntry<int> Cfg_PierceImmunity_DamageReduction;
+        public static ConfigEntry<int> Cfg_SlashImmunity_DamageReduction;
+        public static ConfigEntry<int> Cfg_BluntImmunity_DamageReduction;
+        public static ConfigEntry<int> Cfg_ElementalImmunity_DamageReduction;
+        public static ConfigEntry<int> Cfg_Knockback_StaggerForce;
+        public static ConfigEntry<int> Cfg_Knockback_PushForce;
+
 
         private void OnDestroy()
         {

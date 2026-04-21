@@ -1,2 +1,7 @@
 # Ready to use english translation file for the plugin
 # (for more information on LocalizationManager, see the LocalizationManager documentation https://github.com/blaxxun-boop/LocalizationManager#example-project).
+
+modifier_blunt_resistance: "Enemy resists blunt damage! Try slashing or piercing weapons."
+modifier_slash_resistance: "Enemy resists slash damage! Try blunt or piercing weapons."
+modifier_pierce_resistance: "Enemy resists pierce damage! Try blunt or slashing weapons."
+modifier_elemental_resistance: "Enemy resists elemental damage! Try physical attacks."

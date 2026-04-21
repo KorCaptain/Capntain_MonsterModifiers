@@ -40,7 +40,11 @@ public enum MonsterModifierTypes
     Vampiric,
     Forceful,
     Wet,
-    Quiet
+    Quiet,
+    Knockback,
+    ArmorCharge,
+    FireTrail,
+    ResistanceNotification
 }
 
 public class ModifierData
@@ -52,6 +56,16 @@ public class ModifierData
 public class ModifierUtils
 {
     public static Dictionary<MonsterModifierTypes, ModifierData> modifiers;
+
+    public static readonly HashSet<MonsterModifierTypes> BossExcludedModifiers = new HashSet<MonsterModifierTypes>
+    {
+        MonsterModifierTypes.PoisonDeath,
+        MonsterModifierTypes.FireDeath,
+        MonsterModifierTypes.FrostDeath,
+        MonsterModifierTypes.StaggerDeath,
+        MonsterModifierTypes.HealDeath,
+        MonsterModifierTypes.TarDeath,
+    };
 
     public static Color GetModifierColor(MonsterModifierTypes modifier)
     {
@@ -161,14 +175,24 @@ public class ModifierUtils
         }
         
         if (modifier == MonsterModifierTypes.Quiet)
-
         {
             return ModifierAssetUtils.earIcon;
         }
-        
-        
+
+        if (modifier == MonsterModifierTypes.Knockback ||
+            modifier == MonsterModifierTypes.ArmorCharge ||
+            modifier == MonsterModifierTypes.FireTrail)
+        {
+            return ModifierAssetUtils.plusSquareIcon;
+        }
+
+        if (modifier == MonsterModifierTypes.ResistanceNotification)
+        {
+            return ModifierAssetUtils.potionIcon;
+        }
+
         Debug.Log("Could not find icon for modifier");
-        return ModifierAssetUtils.plusSquareIcon;;
+        return ModifierAssetUtils.plusSquareIcon;
     }
 
     public static int GetModifierWeight(MonsterModifierTypes modifier)
@@ -176,12 +200,26 @@ public class ModifierUtils
         return modifiers[modifier].weight;
     }
 
-    public static List<MonsterModifierTypes> RollRandomModifiers(int numModifiers)
+    public static int GetAvailableModifierCount(HashSet<MonsterModifierTypes> excluded = null)
+    {
+        int count = 0;
+        foreach (var kvp in modifiers)
+            if (kvp.Value.weight > 0 && (excluded == null || !excluded.Contains(kvp.Key)))
+                count++;
+        return count;
+    }
+
+    public static List<MonsterModifierTypes> RollRandomModifiers(int numModifiers,
+        HashSet<MonsterModifierTypes> excluded = null)
     {
         List<MonsterModifierTypes> selectedModifiers = new List<MonsterModifierTypes>();
         Dictionary<MonsterModifierTypes, ModifierData> availableModifiers =
             new Dictionary<MonsterModifierTypes, ModifierData>(modifiers);
-        
+
+        if (excluded != null)
+            foreach (var ex in excluded)
+                availableModifiers.Remove(ex);
+
         for (int i = 0; i < numModifiers; i++)
         {
             int totalWeight = 0;

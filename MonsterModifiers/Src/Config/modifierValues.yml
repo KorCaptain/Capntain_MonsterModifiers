@@ -129,3 +129,19 @@ Wet:
 Quiet:
   weight: 0
   color: [0.88, 0.01, 0.15, 1]  # Red
+
+Knockback:
+  weight: 1
+  color: [1.0, 0.6, 0.0, 1.0]  # Orange
+
+ArmorCharge:
+  weight: 0
+  color: [0.8, 0.8, 0.8, 1.0]  # Silver (synergy, not rolled directly)
+
+FireTrail:
+  weight: 0
+  color: [1.0, 0.3, 0.0, 1.0]  # Deep Orange (synergy, not rolled directly)
+
+ResistanceNotification:
+  weight: 1
+  color: [0.5, 0.9, 1.0, 1.0]  # Cyan

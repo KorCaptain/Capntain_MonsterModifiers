@@ -11,11 +11,21 @@ public class AddMonsterModifiersToCharacter
     {
         private static void Postfix(Character __instance)
         {
-            if (!__instance.IsPlayer() && !__instance.IsBoss())
+            if (!__instance.IsPlayer())
             {
                 __instance.gameObject.AddComponent<MonsterModifier>();
-                // Debug.Log("Monster Modifier component was added to creature with name " + __instance.m_name);
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(Character), "UpdateCachedAnimHashes")]
+    public static class Character_UpdateCachedAnimHashes_Patch
+    {
+        private static bool Prefix(Character __instance)
+        {
+            if (__instance.m_animator == null || !__instance.m_animator.isInitialized)
+                return false;
+            return true;
         }
     }
 }

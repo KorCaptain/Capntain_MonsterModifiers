@@ -36,7 +36,7 @@ namespace MonsterModifiers
                 if (character.m_nview.GetZDO().IsOwner())
                 {
                     character.SetLevel(2);
-                    string serializedModifiers = string.Join(",", modifierName);
+                    string serializedModifiers = modifierName;
                     character.m_nview.GetZDO().Set("modifiers", serializedModifiers);
                 }
             }

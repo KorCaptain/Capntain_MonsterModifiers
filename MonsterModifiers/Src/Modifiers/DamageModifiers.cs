@@ -30,26 +30,27 @@ public class DamageModifiers
 
             if (modiferComponent.Modifiers.Contains(MonsterModifierTypes.PierceImmunity))
             {
-                __instance.m_damageModifiers.m_pierce = HitData.DamageModifier.Immune;
+                hit.m_damage.m_pierce *= (1f - MonsterModifiersPlugin.Cfg_PierceImmunity_DamageReduction.Value / 100f);
             }
-            
+
             if (modiferComponent.Modifiers.Contains(MonsterModifierTypes.SlashImmunity))
             {
-                __instance.m_damageModifiers.m_slash = HitData.DamageModifier.Immune;
+                hit.m_damage.m_slash *= (1f - MonsterModifiersPlugin.Cfg_SlashImmunity_DamageReduction.Value / 100f);
             }
-            
+
             if (modiferComponent.Modifiers.Contains(MonsterModifierTypes.BluntImmunity))
             {
-                __instance.m_damageModifiers.m_blunt = HitData.DamageModifier.Immune;
+                hit.m_damage.m_blunt *= (1f - MonsterModifiersPlugin.Cfg_BluntImmunity_DamageReduction.Value / 100f);
             }
-            
+
             if (modiferComponent.Modifiers.Contains(MonsterModifierTypes.ElementalImmunity))
             {
-                __instance.m_damageModifiers.m_fire = HitData.DamageModifier.Immune;
-                __instance.m_damageModifiers.m_frost = HitData.DamageModifier.Immune;
-                __instance.m_damageModifiers.m_lightning = HitData.DamageModifier.Immune;
-                __instance.m_damageModifiers.m_poison = HitData.DamageModifier.Immune;
-                __instance.m_damageModifiers.m_spirit = HitData.DamageModifier.Immune;
+                float elemReduction = 1f - MonsterModifiersPlugin.Cfg_ElementalImmunity_DamageReduction.Value / 100f;
+                hit.m_damage.m_fire *= elemReduction;
+                hit.m_damage.m_frost *= elemReduction;
+                hit.m_damage.m_lightning *= elemReduction;
+                hit.m_damage.m_poison *= elemReduction;
+                hit.m_damage.m_spirit *= elemReduction;
             }
         }
     }
